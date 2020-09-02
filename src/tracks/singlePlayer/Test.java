@@ -1,10 +1,16 @@
 package tracks.singlePlayer;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
+import core.competition.CompetitionParameters;
 import core.logging.Logger;
 import tools.Utils;
 import tracks.ArcadeMachine;
+import tracks.singlePlayer.advanced.sampleMCTS.SingleTreeNode;
+
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 04/10/13 Time: 16:29 This is a
@@ -30,15 +36,51 @@ public class Test {
 		String[][] games = Utils.readGames(spGamesCollection);
 
 		//Game settings
-		boolean visuals = true;
+		boolean visuals = false;
 		int seed = new Random().nextInt();
 
 		// Game and level to play
-		int gameIdx = 0;
-		int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
+		int gameIdx = Integer.parseInt(args[0]);
+		int levelIdx = Integer.parseInt(args[1]);
+		int repetitions = Integer.parseInt(args[2]);
+		SingleTreeNode.static_depth = Integer.parseInt(args[3]);
+		CompetitionParameters.ACTION_TIME = Integer.parseInt(args[4]);
+
 		String gameName = games[gameIdx][1];
 		String game = games[gameIdx][0];
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
+
+		for (int i = 0; i < repetitions; i++) {
+			double[] result = ArcadeMachine.runOneGame(game, level1, false, sampleMCTSController, null, seed, 0);
+			String fname = String.format("test_%d_%d_%d_%d_%d_%d.txt",
+					gameIdx,
+					levelIdx,
+					repetitions,
+					SingleTreeNode.static_depth,
+					CompetitionParameters.ACTION_TIME,
+					i);
+
+			String output = String.format("%s, %s, %d, %d, %d : %f, %f, %f",
+					game,
+					level1,
+					repetitions,
+					SingleTreeNode.static_depth,
+					CompetitionParameters.ACTION_TIME,
+					result[0],
+					result[1],
+					result[2]
+					);
+
+			try {
+				FileWriter f = new FileWriter(fname);
+				f.write(output);
+				f.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println(output);
+		}
 
 		String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
 						// + levelIdx + "_" + seed + ".txt";
@@ -46,10 +88,10 @@ public class Test {
 						// executed. null if not to save.
 
 		// 1. This starts a game, in a level, played by a human.
-		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+		//ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
-//		ArcadeMachine.runOneGame(game, level1, visuals, sampleRHEAController, recordActionsFile, seed, 0);
+		//ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
 
 		// 3. This replays a game from an action file previously recorded
@@ -67,23 +109,11 @@ public class Test {
 //		}
 
 		//5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//		int N = games.length, L = 2, M = 1;
-//		boolean saveActions = false;
-//		String[] levels = new String[L];
-//		String[] actionFiles = new String[L*M];
-//		for(int i = 0; i < N; ++i)
-//		{
-//			int actionIdx = 0;
-//			game = games[i][0];
-//			gameName = games[i][1];
-//			for(int j = 0; j < L; ++j){
-//				levels[j] = game.replace(gameName, gameName + "_lvl" + j);
-//				if(saveActions) for(int k = 0; k < M; ++k)
-//				actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
-//			}
-//			ArcadeMachine.runGames(game, levels, M, sampleRHEAController, saveActions? actionFiles:null);
-//		}
+		//5 times per level as noted in meeting
+
+
 
 
     }
 }
+
