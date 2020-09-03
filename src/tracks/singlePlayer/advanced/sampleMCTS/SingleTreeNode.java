@@ -28,10 +28,14 @@ public class SingleTreeNode
     public int ROLLOUT_DEPTH = 10;
     public double K = Math.sqrt(2);
 
+    public static int nodesVisited = 0;
+
+
     public StateObservation rootState;
 
     public SingleTreeNode(Random rnd, int num_actions, Types.ACTIONS[] actions) {
         this(null, -1, rnd, num_actions, actions);
+        SingleTreeNode.nodesVisited++;
     }
 
     public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd, int num_actions, Types.ACTIONS[] actions) {
@@ -46,6 +50,7 @@ public class SingleTreeNode
             m_depth = parent.m_depth+1;
         else
             m_depth = 0;
+        SingleTreeNode.nodesVisited++;
     }
 
 

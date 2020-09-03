@@ -51,6 +51,7 @@ public class Test {
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
 
 		for (int i = 0; i < repetitions; i++) {
+			SingleTreeNode.nodesVisited = 0;
 			double[] result = ArcadeMachine.runOneGame(game, level1, false, sampleMCTSController, null, seed, 0);
 			String fname = String.format("test_%d_%d_%d_%d_%d_%d.txt",
 					gameIdx,
@@ -60,7 +61,7 @@ public class Test {
 					CompetitionParameters.ACTION_TIME,
 					i);
 
-			String output = String.format("%s, %s, %d, %d, %d : %f, %f, %f",
+			String output = String.format("%s, %s, %d, %d, %d : %f, %f, %f, %d",
 					game,
 					level1,
 					repetitions,
@@ -68,7 +69,8 @@ public class Test {
 					CompetitionParameters.ACTION_TIME,
 					result[0],
 					result[1],
-					result[2]
+					result[2],
+					SingleTreeNode.nodesVisited
 					);
 
 			try {
