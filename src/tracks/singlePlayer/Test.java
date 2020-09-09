@@ -46,6 +46,14 @@ public class Test {
 		SingleTreeNode.static_depth = Integer.parseInt(args[3]);
 		CompetitionParameters.ACTION_TIME = Integer.parseInt(args[4]);
 
+		String[] argnames = new String[]{"gameIdx", "levelIdx", "repetitions", "depth", "cpu time"};
+
+		for (int i = 0; i < 5; i++) {
+			System.out.print(argnames[i]);
+			System.out.print(":");
+			System.out.println(args[i]);
+		}
+
 		String gameName = games[gameIdx][1];
 		String game = games[gameIdx][0];
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
