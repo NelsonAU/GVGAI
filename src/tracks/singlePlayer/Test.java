@@ -49,9 +49,9 @@ public class Test {
 		String[] argnames = new String[]{"gameIdx", "levelIdx", "repetitions", "depth", "cpu time"};
 
 		for (int i = 0; i < 5; i++) {
-			System.out.print(argnames[i]);
-			System.out.print(":");
-			System.out.println(args[i]);
+			System.err.print(argnames[i]);
+			System.err.print(":");
+			System.err.println(args[i]);
 		}
 
 		String gameName = games[gameIdx][1];
@@ -61,14 +61,6 @@ public class Test {
 		for (int i = 0; i < repetitions; i++) {
 			SingleTreeNode.nodesVisited = 0;
 			double[] result = ArcadeMachine.runOneGame(game, level1, false, sampleMCTSController, null, seed, 0);
-			String fname = String.format("test_%d_%d_%d_%d_%d_%d.txt",
-					gameIdx,
-					levelIdx,
-					repetitions,
-					SingleTreeNode.static_depth,
-					CompetitionParameters.ACTION_TIME,
-					i);
-
 			String output = String.format("%s, %s, %d, %d, %d : %f, %f, %f, %d",
 					game,
 					level1,
@@ -80,14 +72,6 @@ public class Test {
 					result[2],
 					SingleTreeNode.nodesVisited
 					);
-
-			try {
-				FileWriter f = new FileWriter(fname);
-				f.write(output);
-				f.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 
 			System.out.println(output);
 		}
