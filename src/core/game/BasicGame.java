@@ -92,7 +92,7 @@ public class BasicGame extends Game {
 			long t = System.currentTimeMillis();
 
 			pathf.run(this.getObservation());
-			System.out.println(System.currentTimeMillis() - t);
+			//System.out.println(System.currentTimeMillis() - t);
 		}
 	}
 
