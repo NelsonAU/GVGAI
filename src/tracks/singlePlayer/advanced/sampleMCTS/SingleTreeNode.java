@@ -28,14 +28,13 @@ public class SingleTreeNode
     public int ROLLOUT_DEPTH = static_depth;
     public double K = Math.sqrt(2);
 
-    public static int nodesVisited = 0;
+    public static int totalIterations = 0;
 
 
     public StateObservation rootState;
 
     public SingleTreeNode(Random rnd, int num_actions, Types.ACTIONS[] actions) {
         this(null, -1, rnd, num_actions, actions);
-        SingleTreeNode.nodesVisited++;
     }
 
     public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd, int num_actions, Types.ACTIONS[] actions) {
@@ -50,7 +49,6 @@ public class SingleTreeNode
             m_depth = parent.m_depth+1;
         else
             m_depth = 0;
-        SingleTreeNode.nodesVisited++;
     }
 
 
@@ -73,6 +71,7 @@ public class SingleTreeNode
             backUp(selected, delta);
 
             numIters++;
+            totalIterations++;
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
             //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
             avgTimeTaken  = acumTimeTaken/numIters;

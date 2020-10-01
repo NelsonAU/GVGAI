@@ -10,6 +10,7 @@ import core.logging.Logger;
 import tools.Utils;
 import tracks.ArcadeMachine;
 import tracks.singlePlayer.advanced.sampleMCTS.SingleTreeNode;
+import core.game.ForwardModel;
 
 
 /**
@@ -59,18 +60,20 @@ public class Test {
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
 
 		for (int i = 0; i < repetitions; i++) {
-			SingleTreeNode.nodesVisited = 0;
+		        SingleTreeNode.totalIterations = 0;
+			ForwardModel.numCalls = 0;
 			double[] result = ArcadeMachine.runOneGame(game, level1, false, sampleMCTSController, null, seed, 0);
-			String output = String.format("%s, %s, %d, %d, %d : %f, %f, %f, %d",
+			String output = String.format("%s, %s, %d, %d, %d : %d, %f, %d, %d, %d",
 					game,
 					level1,
 					repetitions,
 					SingleTreeNode.static_depth,
 					CompetitionParameters.ACTION_TIME,
-					result[0],
-					result[1],
-					result[2],
-					SingleTreeNode.nodesVisited
+					(int)result[0], // result: -100 for disqualified, -1 for no winner, 0 for loss, 1 for win
+					result[1],      // score
+					(int)result[2], // game length in ticks
+					SingleTreeNode.totalIterations,
+					ForwardModel.numCalls
 					);
 
 			System.out.println(output);

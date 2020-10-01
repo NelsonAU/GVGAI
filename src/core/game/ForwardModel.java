@@ -21,6 +21,7 @@ import tools.*;
  */
 public class ForwardModel extends Game
 {
+    public static int numCalls = 0;
 
     /**
      * ID of the player that gets this FM
@@ -594,6 +595,7 @@ public class ForwardModel extends Game
      * @param action
      */
     final public void advance(Types.ACTIONS action) {
+        numCalls++;
         if(!isEnded) {
             //apply player action
             updateAvatars(action, 0);
