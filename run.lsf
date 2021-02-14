@@ -1,0 +1,18 @@
+#!/bin/bash
+#BSUB -J gvgai[1-122]
+##BSUB -q short
+#BSUB -n 4
+#BSUB -o jobreport_%J.txt
+
+NUMGAMES=122
+GAME=$(( ($LSB_JOBINDEX-1) % $NUMGAMES ))
+LEVEL=$(( ($LSB_JOBINDEX-1) / $NUMGAMES ))
+
+SAMPLES=5
+
+TIME=40
+
+for DEPTH in 1 2 5 10 25 50 100 250 500 1000 1500 2000
+do
+  /home/mnelson/bin/jdk-15/bin/java -jar Test.jar $GAME $LEVEL $SAMPLES $DEPTH $TIME >> gvgai/results_${GAME}_${LEVEL}_${DEPTH}_${TIME}
+done
