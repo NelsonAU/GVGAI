@@ -35,6 +35,8 @@ public class SingleMCTSPlayer {
      * Depth of Monte Carlo rollouts.
      */
     private final int MCTSRolloutDepth;
+    public static int staticMCTSRolloutDepth;
+    public static int totalIters;
     /**
      * Array of past avatar positions. This is used to give a bias towards exploration of new board locations.
      */
@@ -64,7 +66,7 @@ public class SingleMCTSPlayer {
      */
     public SingleMCTSPlayer(Random randomGenerator, Agent agent) {
         SingleMCTSPlayer.randomGenerator = randomGenerator;
-        this.MCTSRolloutDepth = 5;
+        this.MCTSRolloutDepth = staticMCTSRolloutDepth;
         this.agent = agent;
         this.rootNode = new SingleTreeNode(agent.NUM_ACTIONS);
         this.salvagedTree = null;
@@ -144,6 +146,7 @@ public class SingleMCTSPlayer {
             selected.backUp(selected, delta);   //TODO : I should probably make the backup method cleaner
 
             numIters++;
+            totalIters++;
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis());
 
             avgTimeTaken = acumTimeTaken / numIters;
